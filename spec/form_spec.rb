@@ -34,4 +34,24 @@ RSpec.describe "Form builder" do
       HexletCode.form_for(@user) { |f| f.input :undefined }
     end.to raise_error(NoMethodError)
   end
+
+  it "should generate form with default submit" do
+    expected = File.read("spec/fixtures/form/with_submit.txt").strip!
+    form = HexletCode.form_for @user do |f|
+      f.input :name
+      f.input :job, as: :text
+      f.submit
+    end
+    expect(form).to eq(expected)
+  end
+
+  it "should generate form with custom value submit" do
+    expected = File.read("spec/fixtures/form/with_submit_and_custom_value.txt").strip!
+    form = HexletCode.form_for @user do |f|
+      f.input :name
+      f.input :job, as: :text
+      f.submit "custom"
+    end
+    expect(form).to eq(expected)
+  end
 end
