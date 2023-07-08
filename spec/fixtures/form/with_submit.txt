@@ -1,5 +1,7 @@
 <form action="#" method="post">
+  <label for="name">Name</label>
   <input name="name" type="text" value="alex">
+  <label for="job">Job</label>
   <textarea name="job">programmer</textarea>
   <input type="submit" value="save">
 </form>

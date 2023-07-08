@@ -29,6 +29,8 @@ module HexletCode
       kwargs[:type] = INPUT_TYPE_MAP[content.class.to_s.to_sym] if tag_name == "input"
       kwargs[:value] = content if tag_name == "input"
       tag = HexletCode::Tag.build(tag_name, **kwargs) { content }
+      label = HexletCode::Tag.build("label", for: field) { field.capitalize }
+      add_to_inner_form label
       add_to_inner_form tag
     end
 
