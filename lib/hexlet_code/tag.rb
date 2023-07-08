@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HexletCode
-  class Tag
+  module Tag
     SINGLE_TAGS = %w[img br input].freeze
     PAIR_TAGS = %w[div label a].freeze
 
@@ -10,6 +10,7 @@ module HexletCode
 
     def self.build(tag, **params)
       raise UnknownTagError if !single?(tag) && !pair?(tag)
+
       return "<#{tag}#{generate_params(params)}>" if single?(tag)
       return "<#{tag}#{generate_params(params)}>#{yield if block_given?}</#{tag}>" if pair?(tag)
     end

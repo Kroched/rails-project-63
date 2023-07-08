@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "spec_helper"
+
 RSpec.describe "Form build" do
   let(:user_struct) { Struct.new(:name, :job, keyword_init: true) }
 

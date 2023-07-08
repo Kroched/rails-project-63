@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "spec_helper"
+
 RSpec.describe "Tag build" do
   it "success build single tag without params" do
     tag = HexletCode::Tag.build("img")
