@@ -3,7 +3,7 @@
 module HexletCode
   module Tag
     SINGLE_TAGS = %w[img br input].freeze
-    PAIR_TAGS = %w[div label a].freeze
+    PAIR_TAGS = %w[div label a textarea].freeze
 
     class UnknownTagError < StandardError
     end
@@ -24,8 +24,8 @@ module HexletCode
     end
 
     private_class_method def self.generate_params(params)
-      tmp = params.to_a
-      tmp.empty? ? "" : " #{tmp.map { |param| "#{param[0]}=\"#{param[1]}\"" }.join}"
+      params = params.to_a
+      params.empty? ? "" : " #{params.map { |param| "#{param[0]}=\"#{param[1]}\"" }.join(" ")}"
     end
   end
 end
