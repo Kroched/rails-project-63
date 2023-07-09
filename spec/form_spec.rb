@@ -4,13 +4,14 @@ require_relative 'spec_helper'
 
 User = Struct.new(:name, :job, keyword_init: true)
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'Form builder' do
   before { @user = User.new name: 'alex', job: 'programmer' }
 
   it 'should generate base wrapper' do
-    form = HexletCode.form_for(@user) {}
+    form = HexletCode.form_for(@user)
     expect(form).to eq('<form action="#" method="post"></form>')
-    form = HexletCode.form_for(@user, url: 'example') {}
+    form = HexletCode.form_for(@user, url: 'example')
     expect(form).to eq('<form action="example" method="post"></form>')
   end
 
@@ -55,3 +56,4 @@ RSpec.describe 'Form builder' do
     expect(form).to eq(expected)
   end
 end
+# rubocop:enable Metrics/BlockLength

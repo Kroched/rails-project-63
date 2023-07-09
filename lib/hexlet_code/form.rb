@@ -3,7 +3,7 @@
 module HexletCode
   def self.form_for(poro, **params)
     form = Form.new(poro, **params)
-    yield(form)
+    yield(form) if block_given?
     form.build
   end
 
@@ -28,7 +28,7 @@ module HexletCode
     end
 
     def submit(value = 'Save')
-      fields << HexletCode::Tag::AbstractTag.new('input', type: 'submit', value: value)
+      fields << HexletCode::Tag::AbstractTag.new('input', type: 'submit', value:)
     end
 
     private

@@ -2,9 +2,9 @@
 
 module HexletCode
   module Tag
-    def self.build(tag_name, **params, &block)
+    def self.build(tag_name, **params, &)
       formatter = params[:formatter] || ClassicTagFormatter
-      tag = AbstractTag.new(tag_name, **params, &block)
+      tag = AbstractTag.new(tag_name, **params, &)
       formatter.format(tag)
     end
 
@@ -43,12 +43,12 @@ module HexletCode
         ' ' * ident_level * IDENT_SIZE
       end
 
-      private_class_method def self.generate_tag(tag, ident_level, &block)
+      private_class_method def self.generate_tag(tag, ident_level, &)
         return generate_single_tag(tag, ident_level) if SINGLE_TAGS.include? tag.name
         return generate_pair_text_tag(tag, ident_level) unless tag.content.instance_of?(Array)
-        return generate_pair_text_tag(tag, ident_level, &block) if tag.content.empty?
+        return generate_pair_text_tag(tag, ident_level, &) if tag.content.empty?
 
-        generate_pair_nested_tag(tag, ident_level, &block)
+        generate_pair_nested_tag(tag, ident_level, &)
       end
 
       private_class_method def self.generate_single_tag(tag, ident_level)
@@ -69,7 +69,7 @@ module HexletCode
         content = yield(tag.content) if block_given?
         params = generate_params tag.params
         "#{generate_spaces(ident_level)}<#{tag_name}#{params}>\n#{content}\n" \
-        "#{generate_spaces(ident_level)}</#{tag_name}>"
+          "#{generate_spaces(ident_level)}</#{tag_name}>"
       end
 
       private_class_method def self.generate_params(params)
