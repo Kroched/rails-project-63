@@ -19,7 +19,7 @@ module HexletCode
         raise UnknownTagError unless TAGS.include? tag_name
 
         @name = tag_name
-        @content = block_given? ? block.call : ""
+        @content = block_given? ? block.call : ''
         @params = params
       end
     end
@@ -40,7 +40,7 @@ module HexletCode
       end
 
       private_class_method def self.generate_spaces(ident_level)
-        " " * ident_level * IDENT_SIZE
+        ' ' * ident_level * IDENT_SIZE
       end
 
       private_class_method def self.generate_tag(tag, ident_level, &block)
@@ -59,7 +59,7 @@ module HexletCode
 
       private_class_method def self.generate_pair_text_tag(tag, ident_level)
         tag_name = tag.name
-        content = tag.content.empty? ? "" : tag.content
+        content = tag.content.empty? ? '' : tag.content
         params = generate_params tag.params
         "#{generate_spaces(ident_level)}<#{tag_name}#{params}>#{content}</#{tag_name}>"
       end
@@ -73,8 +73,8 @@ module HexletCode
       end
 
       private_class_method def self.generate_params(params)
-        params = " #{params.map { |k, v| "#{k}=\"#{v}\"" }.join(" ")}" unless params.empty?
-        params = "" if params.empty?
+        params = " #{params.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')}" unless params.empty?
+        params = '' if params.empty?
         params
       end
     end
