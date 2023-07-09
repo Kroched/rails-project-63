@@ -3,5 +3,5 @@
   <input name="name" type="text" value="alex">
   <label for="job">Job</label>
   <textarea name="job">programmer</textarea>
-  <input type="submit" value="save">
+  <input type="submit" value="Save">
 </form>

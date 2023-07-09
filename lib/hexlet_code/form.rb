@@ -1,64 +1,62 @@
 # frozen_string_literal: true
 
 module HexletCode
-  def self.form_for(object, url: nil)
-    method = "post"
-    action = url || "#"
-    form = Form.new(object, action: action, method: method)
+  def self.form_for(poro, **params)
+    form = Form.new(poro, **params)
     yield(form)
     form.build
   end
 
   class Form
-    def initialize(object, action: "#", method: "post")
-      @action = action
-      @method = method
-      @object = object
-      @inner_form = []
+    def initialize(poro, **params)
+      @poro = poro
+      @params = params.clone
+      @fields = []
+      normalize_params
     end
 
     def build
-      inner_form.unshift("\n") unless inner_form.empty?
-      build_wrapper { inner_form.join }
+      HexletCode::Tag.build("form", **params) { fields }
     end
 
-    def input(field, as: :input, **kwargs)
-      content = object.public_send(field)
-      tag_name = TAG_MAP[as]
-      kwargs[:name] = field
-      kwargs[:type] = INPUT_TYPE_MAP[content.class.to_s.to_sym] if tag_name == "input"
-      kwargs[:value] = content if tag_name == "input"
-      tag = HexletCode::Tag.build(tag_name, **kwargs) { content }
-      label = HexletCode::Tag.build("label", for: field) { field.capitalize }
-      add_to_inner_form label
-      add_to_inner_form tag
+    def input(field, **params)
+      value = poro.public_send(field)
+      tag = params[:as] || :input
+      params[:name] = field
+      add_textarea(field, value, **params) if tag == :text
+      add_input(field, value, **params) if tag == :input
     end
 
-    def submit(value = nil)
-      value ||= "save"
-      tag = HexletCode::Tag.build("input", type: "submit", value: value)
-      add_to_inner_form tag
+    def submit(value = "Save")
+      fields << HexletCode::Tag::AbstractTag.new("input", type: "submit", value: value)
     end
 
     private
 
-    TAG_MAP = {
-      text: "textarea",
-      input: "input"
-    }.freeze
+    attr_accessor :params, :poro, :fields
 
-    INPUT_TYPE_MAP = {
-      String: "text"
-    }.freeze
-
-    attr_accessor :action, :method, :object, :inner_form
-
-    def build_wrapper
-      "<form action=\"#{action}\" method=\"#{method}\">#{yield if block_given?}</form>"
+    def add_input(field, value, **params)
+      params[:type] = "text"
+      params[:value] = value
+      fields << build_label(field)
+      fields << HexletCode::Tag::AbstractTag.new("input", **params)
     end
 
-    def add_to_inner_form(tag)
-      inner_form << "  #{tag}\n"
+    def add_textarea(field, value, **params)
+      params = params.clone
+      params.delete(:as)
+      fields << build_label(field)
+      fields << HexletCode::Tag::AbstractTag.new("textarea", **params) { value }
+    end
+
+    def build_label(field)
+      HexletCode::Tag::AbstractTag.new("label", for: field) { field.capitalize }
+    end
+
+    def normalize_params
+      params[:action] = @params[:url] || "#"
+      params[:method] ||= "post"
+      params.delete(:url)
     end
   end
 end
