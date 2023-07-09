@@ -33,10 +33,16 @@ module HexletCode
 
     private
 
+    INPUT_TYPE_MAP = {
+      String: 'text',
+      TrueClass: 'checkbox',
+      FalseClass: 'checkbox'
+    }.freeze
+
     attr_accessor :params, :poro, :fields
 
     def add_input(field, value, **params)
-      params[:type] = 'text'
+      params[:type] = INPUT_TYPE_MAP[value.class.to_s.to_sym]
       params[:value] = value
       fields << build_label(field)
       fields << HexletCode::Tag::AbstractTag.new('input', **params)
