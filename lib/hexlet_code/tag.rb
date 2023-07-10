@@ -3,12 +3,12 @@
 module HexletCode
   module Tag
     def self.build(tag_name, **params, &)
-      formatter = params[:formatter] || ClassicTagFormatter
-      tag = AbstractTag.new(tag_name, **params, &)
+      formatter = params[:formatter] || ClassicFormatter
+      tag = Abstract.new(tag_name, **params, &)
       formatter.format(tag)
     end
 
-    class AbstractTag
+    class Abstract
       TAGS = %w[div p textarea label input img br form].freeze
 
       attr_reader :name, :content, :params
@@ -24,7 +24,7 @@ module HexletCode
       end
     end
 
-    module ClassicTagFormatter
+    module ClassicFormatter
       IDENT_SIZE = 2
       PAIR_TAGS = %w[div p label textarea form].freeze
       SINGLE_TAGS = %w[input img br].freeze

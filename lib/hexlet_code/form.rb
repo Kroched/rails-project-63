@@ -28,7 +28,7 @@ module HexletCode
     end
 
     def submit(value = 'Save')
-      fields << HexletCode::Tag::AbstractTag.new('input', type: 'submit', value:)
+      fields << HexletCode::Tag::Abstract.new('input', type: 'submit', value:)
     end
 
     private
@@ -39,18 +39,18 @@ module HexletCode
       params[:type] = 'text'
       params[:value] = params[:value] || value
       fields << build_label(field)
-      fields << HexletCode::Tag::AbstractTag.new('input', **params)
+      fields << HexletCode::Tag::Abstract.new('input', **params)
     end
 
     def add_textarea(field, value, **params)
       params = params.clone
       params.delete(:as)
       fields << build_label(field)
-      fields << HexletCode::Tag::AbstractTag.new('textarea', **params) { value }
+      fields << HexletCode::Tag::Abstract.new('textarea', **params) { value }
     end
 
     def build_label(field)
-      HexletCode::Tag::AbstractTag.new('label', for: field) { field.capitalize }
+      HexletCode::Tag::Abstract.new('label', for: field) { field.capitalize }
     end
 
     def normalize_params

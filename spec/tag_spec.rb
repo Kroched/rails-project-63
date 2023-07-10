@@ -24,6 +24,6 @@ RSpec.describe 'Tag build' do
   end
 
   it 'should raise error with unknown tag' do
-    expect { HexletCode::Tag.build('undefined_tag') }.to raise_error(HexletCode::Tag::AbstractTag::UnknownTagError)
+    expect { HexletCode::Tag.build('undefined_tag') }.to raise_error(HexletCode::Tag::Abstract::UnknownTagError)
   end
 end
